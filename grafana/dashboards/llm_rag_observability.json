@@ -1,0 +1,80 @@
+{
+  "annotations": {"list": []},
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Request Rate (req/s)",
+      "gridPos": {"h": 4, "w": 6, "x": 0, "y": 0},
+      "targets": [
+        {"expr": "sum(rate(llm_requests_total[1m]))"}
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Error Rate (%)",
+      "gridPos": {"h": 4, "w": 6, "x": 6, "y": 0},
+      "targets": [
+        {"expr": "100 * (sum(rate(llm_requests_total{status=\"error\"}[5m])) / sum(rate(llm_requests_total[5m])))"}
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "p95 Latency (s)",
+      "gridPos": {"h": 4, "w": 6, "x": 12, "y": 0},
+      "targets": [
+        {"expr": "histogram_quantile(0.95, sum(rate(llm_request_latency_seconds_bucket[5m])) by (le))"}
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "SLA Violations (5m)",
+      "gridPos": {"h": 4, "w": 6, "x": 18, "y": 0},
+      "targets": [
+        {"expr": "sum(increase(llm_sla_violations_total[5m]))"}
+      ]
+    },
+    {
+      "type": "timeSeries",
+      "title": "Latency Histogram (rate)",
+      "gridPos": {"h": 10, "w": 12, "x": 0, "y": 4},
+      "targets": [
+        {"expr": "sum(rate(llm_request_latency_seconds_bucket[1m])) by (le)"}
+      ]
+    },
+    {
+      "type": "timeSeries",
+      "title": "Requests by Status",
+      "gridPos": {"h": 10, "w": 12, "x": 12, "y": 4},
+      "targets": [
+        {"expr": "sum(rate(llm_requests_total[1m])) by (status)"}
+      ]
+    },
+    {
+      "type": "timeSeries",
+      "title": "Token Usage (prompt vs completion)",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 14},
+      "targets": [
+        {"expr": "sum(rate(llm_tokens_total[1m])) by (type)"}
+      ]
+    },
+    {
+      "type": "timeSeries",
+      "title": "RAG Hits",
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 14},
+      "targets": [
+        {"expr": "sum(rate(rag_hits_total[1m]))"}
+      ]
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 39,
+  "style": "dark",
+  "tags": ["llm", "rag", "observability"],
+  "time": {"from": "now-30m", "to": "now"},
+  "timezone": "",
+  "title": "LLM/RAG Observability"
+}

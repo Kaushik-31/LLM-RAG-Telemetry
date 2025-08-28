@@ -1,0 +1,20 @@
+groups:
+  - name: llm-rag-alerts
+    rules:
+      - alert: HighErrorRate
+        expr: sum(rate(llm_requests_total{status="error"}[5m])) / sum(rate(llm_requests_total[5m])) > 0.01
+        for: 5m
+        labels:
+          severity: page
+        annotations:
+          summary: "Error rate > 1% for 5m"
+          description: "Investigate API logs and provider status."
+
+      - alert: HighP95Latency
+        expr: histogram_quantile(0.95, sum(rate(llm_request_latency_seconds_bucket[5m])) by (le)) > 1.5
+        for: 5m
+        labels:
+          severity: page
+        annotations:
+          summary: "p95 latency > 1.5s for 5m"
+          description: "SLA breach sustained. Check load, provider latency, or retrieval slowness."

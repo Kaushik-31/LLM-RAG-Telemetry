@@ -1,6 +1,9 @@
+
 # LLM-RAG Telemetry Dashboard
 
 End-to-end template to **monitor and improve reliability** of an LLM/RAG chatbot using **OpenTelemetry (optional), Prometheus, Grafana, and alerting**. Tracks latency, error rate, throughput, token usage, and SLA breach alerts.
+# About
+💬 A chatbot with a live monitoring dashboard — tracks speed, errors, and reliability in real time using FastAPI, Prometheus, and Grafana.
 
 ## ✨ What you get
 - RAG API (FastAPI) with simple in-memory retriever (drop-in your FAISS/Pinecone later)
